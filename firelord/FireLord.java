@@ -5,7 +5,7 @@
 
 /**
 * FireLord 0.4
-* Copyright (C) 2011 W4rGo <franrv@gmail.com>
+* Copyright (C) 2011 W4rGo , Francisco Ruiz Valdes <franrv@gmail.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
