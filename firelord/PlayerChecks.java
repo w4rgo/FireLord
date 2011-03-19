@@ -5,6 +5,8 @@
 
 package firelord;
 
+import java.util.ArrayList;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,6 +38,8 @@ public class PlayerChecks {
     private static final String helmetPerm = "firelord.helmet";
     private static final String adminPerm = "firelord.admins";
     private static boolean permissionsOn = false;
+
+    private static ArrayList<Pig> burntPigs = new  ArrayList<Pig>();
 
     public static boolean hasFirelordArmor(Player player) {
 
@@ -113,6 +117,14 @@ public class PlayerChecks {
         permissionsOn=value;
     }
 
-
+    public static boolean pigBurnt(Pig pig) {
+        if( burntPigs.contains(pig)) {
+            burntPigs.remove(pig);
+            return true;
+        } else return false;
+    }
+    public static void burnPig(Pig pig) {
+        if(!burntPigs.contains(pig)) burntPigs.add(pig);
+    }
 
 }

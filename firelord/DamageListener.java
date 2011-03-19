@@ -1,14 +1,20 @@
 package firelord;
 
 import java.util.logging.Logger;
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.entity.CraftPig;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitScheduler;
 
 /**
 * FireLord 0.4
@@ -36,7 +42,27 @@ public class DamageListener extends EntityListener {
     DamageListener(FireLord firelord) {
        plugin = firelord;
     }
-    
+
+
+
+    @Override
+    public void onEntityDeath(EntityDeathEvent event) {
+        super.onEntityDeath(event);
+        //check if is the pig.
+        if(event.getEntity() instanceof Pig) {
+            if(PlayerChecks.pigBurnt((Pig) event.getEntity())) {
+                
+                int numDrops = event.getDrops().size();
+                event.getDrops().clear();
+                for(int i = 0;i<numDrops;i++) {
+                    event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), new ItemStack(Material.GRILLED_PORK,1));
+                }
+
+            }
+            //if the pig die due to the firelord sword, or by fire, drop cooked steak.
+        }
+    }
+
     //Fire Sword and Fire Armor
     @Override
     public void onEntityDamage(EntityDamageEvent event) { //
@@ -52,7 +78,7 @@ public class DamageListener extends EntityListener {
                 if (PlayerChecks.allowedSword(player)&&Config.isFireSword()) {
                     if(PlayerChecks.hasFirelordSword(player)) {
                         event.getEntity().setFireTicks(Config.getFireDuration()); //Set on fire when hit with gold sword
-                        event.getEntity();                 
+                        if(event.getEntity() instanceof Pig) PlayerChecks.burnPig((Pig) event.getEntity()); //Add pig to the burned pigs list
                     }
                 }
             }
@@ -75,6 +101,8 @@ public class DamageListener extends EntityListener {
                    (event.getCause() == DamageCause.FIRE_TICK) || 
                    (event.getCause() == DamageCause.LAVA)) {
                             //Permissions
+                        if(event.getEntity() instanceof Pig) PlayerChecks.burnPig((Pig) event.getEntity());//if it is a pig, then add to burntPigs list
+
                         if(event.getEntity() instanceof Player) {//if the damaged is a player, and damaged by fire/lava
                             Player player = (Player) event.getEntity();
                             if (PlayerChecks.allowedArmor(player)&&Config.isFireResist()) {
@@ -86,6 +114,9 @@ public class DamageListener extends EntityListener {
                         }
                 }
     }
+
+
+
 }
 
 
