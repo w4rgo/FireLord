@@ -46,6 +46,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class FireLord extends JavaPlugin{
     public static PermissionHandler Permissions;
     public CommandListener listener = new CommandListener(this);
+    public blockListener blockListener = new blockListener(this);
     public DamageListener dmgListener = new DamageListener(this);
     public PlayerMoveListener moveListener = new PlayerMoveListener(this);
     private String name = "FireLord (By W4rGo)";
@@ -80,6 +81,8 @@ public class FireLord extends JavaPlugin{
             getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGED, dmgListener, Priority.Normal, this);
             getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, dmgListener, Priority.Normal, this);
             getServer().getPluginManager().registerEvent(Event.Type.PLAYER_MOVE, moveListener, Priority.Normal, this);
+            getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK, blockListener,Priority.Normal, this);
+    		setupPermissions();
             
             
         } catch (FileNotFoundException ex) {

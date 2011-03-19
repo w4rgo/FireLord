@@ -35,6 +35,9 @@ public class PlayerChecks {
     private static final String fireStepPerm = "firelord.boots.firestep";
     private static final String overFluidsPerm = "firelord.boots.overfluids";
     private static final String swordPerm = "firelord.sword";
+    private static final String pickPerm = "firelord.pick";
+    private static final String axePerm = "firelord.axe";
+    private static final String shovelPerm = "firelord.shovel";
     private static final String helmetPerm = "firelord.helmet";
     private static final String adminPerm = "firelord.admins";
     private static boolean permissionsOn = false;
@@ -62,6 +65,27 @@ public class PlayerChecks {
     public static boolean allowedSword(Player player) {
         if(permissionsOn) {
             if (FireLord.Permissions.has( player, swordPerm)) {
+                return true;
+            } else return false;
+        } else return true;
+    }
+    public static boolean allowedPick(Player player) {
+        if(permissionsOn) {
+            if (FireLord.Permissions.has( player, pickPerm)) {
+                return true;
+            } else return false;
+        } else return true;
+    }
+    public static boolean allowedAxe(Player player) {
+        if(permissionsOn) {
+            if (FireLord.Permissions.has( player, axePerm)) {
+                return true;
+            } else return false;
+        } else return true;
+    }
+    public static boolean allowedShovel(Player player) {
+        if(permissionsOn) {
+            if (FireLord.Permissions.has( player, shovelPerm)) {
                 return true;
             } else return false;
         } else return true;

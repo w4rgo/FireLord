@@ -50,8 +50,14 @@ public class Config{
     private static int chestId = 315;
     private static int bootsId = 317;
     private static int legsId = 316;
+    private static int pickId = 285;
+    private static int axeId = 286;
+    private static int shovelId = 284;
 
     private static boolean fireSword=true;
+    private static boolean firePick=true;
+    private static boolean fireAxe=true;
+    private static boolean fireShovel=true;
     private static boolean fireResist=true;
     private static boolean fireReflect=true;
     private static boolean fireStep=false;
@@ -77,6 +83,9 @@ public class Config{
         Config.fireDuration = Integer.valueOf(config.getProperty("fireduration")) * 20;
 
         Config.fireSword= boolValue(config.getProperty("fireSword"));
+        Config.firePick= boolValue(config.getProperty("firePick"));
+        Config.fireAxe= boolValue(config.getProperty("fireAxe"));
+        Config.fireShovel= boolValue(config.getProperty("fireShovel"));
         Config.fireResist =boolValue(config.getProperty("fireResist"));
         Config.fireReflect = boolValue(config.getProperty("fireReflect"));
         Config.fireStep = boolValue(config.getProperty("fireStep"));
@@ -98,6 +107,9 @@ public class Config{
         Config.helmId = Integer.valueOf(config.getProperty("helmet"));
         Config.legsId = Integer.valueOf(config.getProperty("leggings"));
         Config.swordId = Integer.valueOf(config.getProperty("sword"));
+        Config.pickId = Integer.valueOf(config.getProperty("pick"));
+        Config.axeId = Integer.valueOf(config.getProperty("axe"));
+        Config.shovelId = Integer.valueOf(config.getProperty("shovel"));
 
     }
 
@@ -130,6 +142,42 @@ public class Config{
         try {
             fireSword = value;
             config.setProperty("fireSword", String.valueOf(value));
+            fo = new FileOutputStream(configPath);
+            config.store(fo, configPath);
+            fo.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void setFirePick(boolean value) {
+        FileOutputStream fo = null;
+        try {
+            firePick = value;
+            config.setProperty("firePick", String.valueOf(value));
+            fo = new FileOutputStream(configPath);
+            config.store(fo, configPath);
+            fo.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void setFireAxe(boolean value) {
+        FileOutputStream fo = null;
+        try {
+            fireAxe = value;
+            config.setProperty("fireAxe", String.valueOf(value));
+            fo = new FileOutputStream(configPath);
+            config.store(fo, configPath);
+            fo.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void setFireShovel(boolean value) {
+        FileOutputStream fo = null;
+        try {
+            fireShovel = value;
+            config.setProperty("fireShovel", String.valueOf(value));
             fo = new FileOutputStream(configPath);
             config.store(fo, configPath);
             fo.close();
@@ -201,6 +249,7 @@ public class Config{
     public static int getLegsId() {
         return legsId;
     }
+    
     public static int getBootsId() {
         return bootsId;
     }
@@ -212,6 +261,15 @@ public class Config{
     }
     public static int getSwordId() {
         return swordId;
+    }
+    public static int getPickId() {
+        return pickId;
+    }
+    public static int getAxeId() {
+        return axeId;
+    }
+    public static int getShovelId() {
+        return shovelId;
     }
     public static int getFireDuration() {
         return fireDuration;
@@ -227,6 +285,15 @@ public class Config{
     }
     public static boolean isFireSword() {
         return fireSword;
+    }
+    public static boolean isFirePick() {
+        return firePick;
+    }
+    public static boolean isFireAxe() {
+        return fireAxe;
+    }
+    public static boolean isFireShovel() {
+        return fireShovel;
     }
     public static boolean isOverLava() {
         return overLava;

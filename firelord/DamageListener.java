@@ -2,8 +2,6 @@ package firelord;
 
 import java.util.logging.Logger;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.entity.CraftPig;
-
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
