@@ -129,7 +129,7 @@ public class PlayerChecks {
         } else return false;
     }
     public static boolean hasFirelordSword(Player player) {
-        return player.getItemInHand().getTypeId() == Config.getSwordId();
+        return ((player.getItemInHand().getTypeId() == Config.getAxeId()) ||(player.getItemInHand().getTypeId() == Config.getPickId()) || (player.getItemInHand().getTypeId() == Config.getShovelId()) || (player.getItemInHand().getTypeId() == Config.getSwordId()));
     }
     public static boolean hasFirelordHelmet(Player player) {
         return player.getInventory().getHelmet().getTypeId() == Config.getHelmId();

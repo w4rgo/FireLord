@@ -38,10 +38,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author franrv
  *
- *
- * //Y si no tienes permissions ?
- *
- * Y si no quieres las funcionalidades ?
+
  */
 public class FireLord extends JavaPlugin{
     public static PermissionHandler Permissions;

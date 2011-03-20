@@ -70,7 +70,7 @@ public class DamageListener extends EntityListener {
             
             EntityDamageByEntityEvent eventDmgByEntity = (EntityDamageByEntityEvent) event;
             Entity damager = eventDmgByEntity.getDamager();
-            //FIRELORD SWORD FIRE DAMAGE
+            //FIRELORD SWORD FIRE DAMAGE AND TOOLS
             if(damager instanceof Player) { //If the damager is a player, check if has the firelord sword
                 Player player = (Player) damager;
                 if (PlayerChecks.allowedSword(player)&&Config.isFireSword()) {
