@@ -46,8 +46,8 @@ public class FireLord extends JavaPlugin{
     public blockListener blockListener = new blockListener(this);
     public DamageListener dmgListener = new DamageListener(this);
     public PlayerMoveListener moveListener = new PlayerMoveListener(this);
-    private String name = "FireLord (By W4rGo)";
-    private String version = "0.4";
+    private String name = "[FireLord]";
+    private String version = "0.5";
     public static final Logger log = Logger.getLogger("Minecraft");
 
     public void onDisable() {

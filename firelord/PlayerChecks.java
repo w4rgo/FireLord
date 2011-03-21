@@ -151,4 +151,11 @@ public class PlayerChecks {
         if(!burntPigs.contains(pig)) burntPigs.add(pig);
     }
 
+    public static boolean playerSetFireOnHit(Player player) {
+        return ((PlayerChecks.allowedSword(player)&&Config.isFireSword())
+             || (PlayerChecks.allowedPick(player)&&Config.isFirePick())
+             || (PlayerChecks.allowedAxe(player)&&Config.isFireAxe())
+             || (PlayerChecks.allowedShovel(player)&&Config.isFireShovel()));
+    }
+
 }

@@ -73,11 +73,14 @@ public class DamageListener extends EntityListener {
             //FIRELORD SWORD FIRE DAMAGE AND TOOLS
             if(damager instanceof Player) { //If the damager is a player, check if has the firelord sword
                 Player player = (Player) damager;
-                if (PlayerChecks.allowedSword(player)&&Config.isFireSword()) {
+
+                if ( PlayerChecks.playerSetFireOnHit(player) ) {
+
                     if(PlayerChecks.hasFirelordSword(player)) {
                         event.getEntity().setFireTicks(Config.getFireDuration()); //Set on fire when hit with gold sword
                         if(event.getEntity() instanceof Pig) PlayerChecks.burnPig((Pig) event.getEntity()); //Add pig to the burned pigs list
                     }
+                    
                 }
             }
             //FIRELORD ARMOR FIRE REFLECT
@@ -90,7 +93,7 @@ public class DamageListener extends EntityListener {
                    }
                    else if(damager instanceof Skeleton) damagerHasBow = true;
                    if(PlayerChecks.hasFirelordArmor(player) && !damagerHasBow){//If the player has the firelord armor and the damager is not ranged
-                        damager.setFireTicks(Config.getFireDuration());//Set the damager on fire
+                        damager.setFireTicks(Config.getFireReflectDuration());//Set the damager on fire
                    }
                 }
             }
