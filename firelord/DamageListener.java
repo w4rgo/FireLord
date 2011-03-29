@@ -3,6 +3,7 @@ package firelord;
 import java.util.logging.Logger;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
@@ -77,7 +78,15 @@ public class DamageListener extends EntityListener {
                 if ( PlayerChecks.playerSetFireOnHit(player) ) {
 
                     if(PlayerChecks.hasFirelordSword(player)) {
-                        event.getEntity().setFireTicks(Config.getFireDuration()); //Set on fire when hit with gold sword
+                     
+                        if(event.getEntity() instanceof HumanEntity) {
+                            if(Config.isAllowedPvp()) {
+                            event.getEntity().setFireTicks(Config.getFireDuration());
+                            }
+                        } else {
+                            event.getEntity().setFireTicks(Config.getFireDuration());
+                        }
+                         //Set on fire when hit with gold sword
                         if(event.getEntity() instanceof Pig) PlayerChecks.burnPig((Pig) event.getEntity()); //Add pig to the burned pigs list
                     }
                     

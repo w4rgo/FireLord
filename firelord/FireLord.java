@@ -74,8 +74,8 @@ public class FireLord extends JavaPlugin{
             log.info(name + " version " + version + " enabled!");
             getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, listener, Priority.Normal, this);
             getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, listener, Priority.Normal, this);
-            getServer().getPluginManager().registerEvent(Event.Type.PLAYER_ITEM, listener, Priority.Normal, this);
-            getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGED, dmgListener, Priority.Normal, this);
+            getServer().getPluginManager().registerEvent(Event.Type.PLAYER_ITEM_HELD, listener, Priority.Normal, this);
+            getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, dmgListener, Priority.Normal, this);
             getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, dmgListener, Priority.Normal, this);
             getServer().getPluginManager().registerEvent(Event.Type.PLAYER_MOVE, moveListener, Priority.Normal, this);
             getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK, blockListener,Priority.Normal, this);

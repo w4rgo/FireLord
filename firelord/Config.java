@@ -59,7 +59,7 @@ public class Config {
     private static boolean overWater = false;
     private static boolean overLava = false;
     private static boolean underWater = false;
-
+    private static boolean allowedPvp = true;
 
     private static boolean boolValue(String value) {
         if (value.equalsIgnoreCase("true")) {
@@ -210,6 +210,12 @@ public class Config {
             changed = true;
         }
         
+        if (config.getProperty("allowedPvp") != null) {
+            allowedPvp = boolValue(config.getProperty("allowedPvp"));
+        } else {
+            config.setProperty("allowedPvp", String.valueOf(allowedPvp));
+            changed = true;
+        }
 
         if (changed) {
             FileOutputStream fo = new FileOutputStream(configPath);
@@ -375,6 +381,20 @@ public class Config {
         }
     }
 
+    public static void setAllowedPvp(boolean value) {
+        FileOutputStream fo = null;
+        try {
+            allowedPvp = value;
+            config.setProperty("allowedPvp", String.valueOf(value));
+            fo = new FileOutputStream(configPath);
+            config.store(fo, configPath);
+            fo.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
     public static int getLegsId() {
         return legsId;
     }
@@ -453,5 +473,9 @@ public class Config {
 
     public static boolean isUnderWater() {
         return underWater;
+    }
+
+    public static boolean isAllowedPvp() {
+        return allowedPvp;
     }
 }

@@ -3,6 +3,7 @@ package firelord;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
 
 /**
@@ -31,8 +32,9 @@ public class CommandListener extends PlayerListener {
         plugin = firelord;
     }
 
+
     @Override
-    public void onPlayerCommandPreprocess(PlayerChatEvent event) {
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         super.onPlayerCommandPreprocess(event);
         String[] split = event.getMessage().split(" ");
         if (!PlayerChecks.isAdmin(event.getPlayer())) {
