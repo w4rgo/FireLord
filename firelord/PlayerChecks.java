@@ -157,5 +157,12 @@ public class PlayerChecks {
              || (PlayerChecks.allowedAxe(player)&&Config.isFireAxe())
              || (PlayerChecks.allowedShovel(player)&&Config.isFireShovel()));
     }
-
+    
+    public static boolean checkLuck() {
+        double luck =  Math.random()*100;
+        System.out.println(luck);
+        if(Config.getPercentage() >= luck) {
+            return true;
+        } else return false;
+    } 
 }

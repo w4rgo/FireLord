@@ -57,16 +57,7 @@ public class PlayerMoveListener extends PlayerListener {
                     }
             }
         }
-        //FIRE LORD HELMET UNDERWATER AIR
-        if(PlayerChecks.hasFirelordHelmet(player)) {
-            if( PlayerChecks.allowedHelmet(player)&&Config.isUnderWater() ) {
-                if(blockOn.getType()== Material.WATER ) {
-                    player.setRemainingAir(10);
-                    player.setMaximumAir(10);
-                    System.out.println("Vas amorir");
-                }
-            }
-        }
+
     }
 }
 

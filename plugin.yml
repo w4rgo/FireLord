@@ -1,4 +1,8 @@
 name: FireLord
 main: firelord.FireLord
 author: w4rgo
-version: 0.5.3
+version: 0.6
+commands:
+  FIRELORD:
+    Description: Displays the options of firelord plugin
+    Usage: /firelord 

@@ -60,6 +60,8 @@ public class Config {
     private static boolean overLava = false;
     private static boolean underWater = false;
     private static boolean allowedPvp = true;
+    private static int percentage = 100;
+    static boolean isAllowedMolotov = true;
 
     private static boolean boolValue(String value) {
         if (value.equalsIgnoreCase("true")) {
@@ -214,6 +216,12 @@ public class Config {
             allowedPvp = boolValue(config.getProperty("allowedPvp"));
         } else {
             config.setProperty("allowedPvp", String.valueOf(allowedPvp));
+            changed = true;
+        }
+        if(config.getProperty("luck") != null) {
+            percentage = Integer.valueOf(config.getProperty("luck"));
+        } else {
+            config.setProperty("luck", String.valueOf(percentage));
             changed = true;
         }
 
@@ -476,6 +484,15 @@ public class Config {
     }
 
     public static boolean isAllowedPvp() {
+        
         return allowedPvp;
+    }
+
+    public static int getPercentage() {
+        return percentage;
+    }
+
+    public static void setPercentage(int percentage) {
+        Config.percentage = percentage;
     }
 }

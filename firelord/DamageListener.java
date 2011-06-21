@@ -1,6 +1,8 @@
 package firelord;
 
 import java.util.logging.Logger;
+import org.bukkit.Achievement;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -66,22 +68,22 @@ public class DamageListener extends EntityListener {
     @Override
     public void onEntityDamage(EntityDamageEvent event) { //
         super.onEntityDamage(event);
-
+        Player player = (Player) event.getEntity();
         if(event instanceof EntityDamageByEntityEvent) {
             
             EntityDamageByEntityEvent eventDmgByEntity = (EntityDamageByEntityEvent) event;
             Entity damager = eventDmgByEntity.getDamager();
             //FIRELORD SWORD FIRE DAMAGE AND TOOLS
             if(damager instanceof Player) { //If the damager is a player, check if has the firelord sword
-                Player player = (Player) damager;
+                player = (Player) damager;
 
                 if ( PlayerChecks.playerSetFireOnHit(player) ) {
 
-                    if(PlayerChecks.hasFirelordSword(player)) {
+                    if(PlayerChecks.hasFirelordSword(player) && PlayerChecks.checkLuck()) {
                      
                         if(event.getEntity() instanceof HumanEntity) {
-                            if(Config.isAllowedPvp()) {
-                            event.getEntity().setFireTicks(Config.getFireDuration());
+                            if(Config.isAllowedPvp() && event.getEntity().getWorld().getPVP()) {
+                                event.getEntity().setFireTicks(Config.getFireDuration());
                             }
                         } else {
                             event.getEntity().setFireTicks(Config.getFireDuration());
@@ -89,13 +91,13 @@ public class DamageListener extends EntityListener {
                          //Set on fire when hit with gold sword
                         if(event.getEntity() instanceof Pig) PlayerChecks.burnPig((Pig) event.getEntity()); //Add pig to the burned pigs list
                     }
-                    
+                   
                 }
             }
             //FIRELORD ARMOR FIRE REFLECT
-            if(event.getEntity() instanceof Player) {//If the damaged is a player, check if has the firelord armor
-                Player player = (Player) event.getEntity();
-                if (PlayerChecks.allowedArmor(player)&&Config.isFireReflect()) {
+            if(player instanceof Player) {//If the damaged is a player, check if has the firelord armor
+               
+                if (PlayerChecks.allowedArmor(player)&&Config.isFireReflect() && PlayerChecks.checkLuck()) {
                    boolean damagerHasBow = false;
                    if(damager instanceof Player) {
                        if( ((Player)damager).getItemInHand().getTypeId()==261 ) damagerHasBow = true;
@@ -114,8 +116,8 @@ public class DamageListener extends EntityListener {
                         if(event.getEntity() instanceof Pig) PlayerChecks.burnPig((Pig) event.getEntity());//if it is a pig, then add to burntPigs list
 
                         if(event.getEntity() instanceof Player) {//if the damaged is a player, and damaged by fire/lava
-                            Player player = (Player) event.getEntity();
-                            if (PlayerChecks.allowedArmor(player)&&Config.isFireResist()) {
+                          
+                            if (PlayerChecks.allowedArmor(player)&&Config.isFireResist() && PlayerChecks.checkLuck()) {
                                 if (PlayerChecks.hasFirelordArmor(player)) {
                                     event.setCancelled(true);//If he has the firelord armor cancel the damage
                                     player.setFireTicks(0);//To avoid the anoying fire animation
@@ -123,9 +125,23 @@ public class DamageListener extends EntityListener {
                             }
                         }
                 }
+        
+                //FIRE LORD HELMET UNDERWATER AIR
+        if(PlayerChecks.hasFirelordHelmet(player)) {
+            if( PlayerChecks.allowedHelmet(player)&&Config.isUnderWater() ) {
+                if(event.getCause().equals(event.getCause().DROWNING)) {
+                    player.setRemainingAir(10);
+                    player.setMaximumAir(10);
+                    event.setCancelled(true);
+                }
+                
+            }
+        }
+        
+        
     }
 
-
+    
 
 }
 
