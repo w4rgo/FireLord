@@ -72,7 +72,7 @@ public class FireLord extends JavaPlugin{
             Config.loadConfig(this.getDataFolder());
             setupPermissions();
             log.info(name + " version " + version + " enabled!");
-           // getCommand("firelord").setExecutor(new FirelordCommand(this));
+           
             getCommand("firelord").setExecutor(new FirelordCommand(this));
             getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, dmgListener, Priority.Normal, this);
             getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, dmgListener, Priority.Normal, this);

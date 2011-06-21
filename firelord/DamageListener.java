@@ -68,14 +68,16 @@ public class DamageListener extends EntityListener {
     @Override
     public void onEntityDamage(EntityDamageEvent event) { //
         super.onEntityDamage(event);
-        Player player = (Player) event.getEntity();
+
+
+
         if(event instanceof EntityDamageByEntityEvent) {
             
             EntityDamageByEntityEvent eventDmgByEntity = (EntityDamageByEntityEvent) event;
             Entity damager = eventDmgByEntity.getDamager();
             //FIRELORD SWORD FIRE DAMAGE AND TOOLS
             if(damager instanceof Player) { //If the damager is a player, check if has the firelord sword
-                player = (Player) damager;
+                Player player = (Player) damager;
 
                 if ( PlayerChecks.playerSetFireOnHit(player) ) {
 
@@ -95,8 +97,8 @@ public class DamageListener extends EntityListener {
                 }
             }
             //FIRELORD ARMOR FIRE REFLECT
-            if(player instanceof Player) {//If the damaged is a player, check if has the firelord armor
-               
+            if(event.getEntity() instanceof Player) {//If the damaged is a player, check if has the firelord armor
+               Player player = (Player) event.getEntity();
                 if (PlayerChecks.allowedArmor(player)&&Config.isFireReflect() && PlayerChecks.checkLuck()) {
                    boolean damagerHasBow = false;
                    if(damager instanceof Player) {
@@ -116,7 +118,7 @@ public class DamageListener extends EntityListener {
                         if(event.getEntity() instanceof Pig) PlayerChecks.burnPig((Pig) event.getEntity());//if it is a pig, then add to burntPigs list
 
                         if(event.getEntity() instanceof Player) {//if the damaged is a player, and damaged by fire/lava
-                          
+                          Player player = (Player) event.getEntity();
                             if (PlayerChecks.allowedArmor(player)&&Config.isFireResist() && PlayerChecks.checkLuck()) {
                                 if (PlayerChecks.hasFirelordArmor(player)) {
                                     event.setCancelled(true);//If he has the firelord armor cancel the damage
@@ -127,14 +129,18 @@ public class DamageListener extends EntityListener {
                 }
         
                 //FIRE LORD HELMET UNDERWATER AIR
-        if(PlayerChecks.hasFirelordHelmet(player)) {
-            if( PlayerChecks.allowedHelmet(player)&&Config.isUnderWater() ) {
-                if(event.getCause().equals(event.getCause().DROWNING)) {
-                    player.setRemainingAir(10);
-                    player.setMaximumAir(10);
-                    event.setCancelled(true);
+        if(event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            if(PlayerChecks.hasFirelordHelmet(player)) {
+                if( PlayerChecks.allowedHelmet(player)&&Config.isUnderWater() ) {
+                    if(event.getCause().equals(event.getCause().DROWNING)) {
+
+                        player.setRemainingAir(10);
+                        player.setMaximumAir(10);
+                        event.setCancelled(true);
+                    }
+
                 }
-                
             }
         }
         
