@@ -4,6 +4,7 @@
  */
 package firelord;
 
+import firelord.tools.Dbg;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,9 +12,8 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.nijiko.permissions.PermissionHandler;
 import java.io.File;
+import java.util.HashMap;
 
 /**
  * FireLord 0.4
@@ -34,7 +34,30 @@ import java.io.File;
  */
 public class Config {
 
-    public static PermissionHandler Permissions;
+    // public static PermissionHandler Permissions;
+    private static boolean isResidence;
+
+
+    
+
+    /**
+     * Get the value of isResidence
+     *
+     * @return the value of isResidence
+     */
+    public static boolean isIsResidence() {
+        return isResidence;
+    }
+
+    /**
+     * Set the value of isResidence
+     *
+     * @param isResidence new value of isResidence
+     */
+    public static void setIsResidence(boolean isResidence) {
+        isResidence = isResidence;
+    }
+
     private static String configPath = "plugins/FireLord/config.properties";
     private static String configFile = "config.properties";
     private static int fireDuration = 50;
@@ -50,9 +73,10 @@ public class Config {
     private static int axeId = 286;
     private static int shovelId = 284;
     private static boolean fireSword = true;
-    private static boolean firePick = true;
-    private static boolean fireAxe = true;
-    private static boolean fireShovel = true;
+    private static boolean fireTools = true;
+    //private static boolean firePick = true;
+    //private static boolean fireAxe = true;
+    //private static boolean fireShovel = true;        
     private static boolean fireResist = true;
     private static boolean fireReflect = true;
     private static boolean fireStep = false;
@@ -61,8 +85,62 @@ public class Config {
     private static boolean underWater = false;
     private static boolean allowedPvp = true;
     private static int percentage = 100;
-    static boolean isAllowedMolotov = true;
+    private static boolean isAllowedMolotov = true;
+    private static boolean fireNoFallDamage= true;
+    
+    private static int stepRadius = 0;//-
+    private static int pillarRadius = 1;//-
+    private static int pillarHeight = 2;//-
+    private static int explosionForce = 3;//-
+    private static boolean expansive = true;//
+    private static int expansiveQuantum = 300;//-
+    private static int expansiveMaxRadius =5;//-
+    private static boolean fallDmg = true;//-
+    private static boolean fireSplash = true;
+    private static int rodId=369;
+    private static boolean fireRod=false;
+    private static Config instance;
+    private static int rodReuseTime=60;
+    public static int getRodId() {
+        return rodId;
+    }
 
+    public static boolean isFireRod() {
+        return fireRod;
+    }
+
+    public static int getRodReuseTime() {
+        return rodReuseTime;
+    }
+    
+    private HashMap<String,Object> props = new HashMap<String,Object>();
+
+    public void setProp(String name,int prop) {
+            config.setProperty(name, String.valueOf(prop));
+    }
+    public void setProp(String name,String prop) {
+            config.setProperty(name, prop);
+    }
+    public int getIntProp(String name) {
+        return Integer.valueOf(config.getProperty(name));
+    }
+    public String getStringProp(String name) {
+        return config.getProperty(name);
+    }
+    
+    public static Config getInstance () {
+        if(instance == null) instance = new Config();
+        return instance;
+    }
+    
+    public static int getExplosionForce() {
+        return explosionForce;
+    }
+
+    public static void setExplosionForce(int explosionForce) {
+        Config.explosionForce = explosionForce;
+    }
+   
     private static boolean boolValue(String value) {
         if (value.equalsIgnoreCase("true")) {
             return true;
@@ -77,14 +155,19 @@ public class Config {
         boolean changed = false;
         configPath = filePath.toString() + File.separator + configFile;
         config = new Properties();
+        
+
         try {
             fi = new FileInputStream(Config.configPath);
 
             config.load(fi);
-        } catch (FileNotFoundException e) {
-            File f = new File(configPath);
+        } catch (IOException e) {
+
+            File folder = new File("FireLord");
+            File f = new File(configPath);          
             f.createNewFile();
             fi = new FileInputStream(Config.configPath);
+        
         }
 
 
@@ -94,6 +177,14 @@ public class Config {
             config.setProperty("fireReflectDuration", String.valueOf(fireReflectDuration));
             changed = true;
         }
+        if (config.getProperty("rodReuseTime") != null) {
+            fireDuration = Integer.valueOf(config.getProperty("rodReuseTime")) ;
+        } else {
+            config.setProperty("rodReuseTime", String.valueOf(rodReuseTime));
+            changed = true;
+        }
+        
+        
         if (config.getProperty("fireduration") != null) {
             fireDuration = Integer.valueOf(config.getProperty("fireduration")) * 20;
         } else {
@@ -106,22 +197,11 @@ public class Config {
             config.setProperty("fireSword", String.valueOf(fireSword));
             changed = true;
         }
-        if (config.getProperty("firePick") != null) {
-            firePick = boolValue(config.getProperty("firePick"));
+
+        if (config.getProperty("fireTools") != null) {
+            fireTools = boolValue(config.getProperty("fireTools"));
         } else {
-            config.setProperty("firePick", String.valueOf(firePick));
-            changed = true;
-        }
-        if (config.getProperty("fireAxe") != null) {
-            fireAxe = boolValue(config.getProperty("fireAxe"));
-        } else {
-            config.setProperty("fireAxe", String.valueOf(fireAxe));
-            changed = true;
-        }
-        if (config.getProperty("fireShovel") != null) {
-            fireShovel = boolValue(config.getProperty("fireShovel"));
-        } else {
-            config.setProperty("fireShovel", String.valueOf(fireShovel));
+            config.setProperty("fireTools", String.valueOf(fireTools));
             changed = true;
         }
         if (config.getProperty("fireResist") != null) {
@@ -140,6 +220,12 @@ public class Config {
             fireStep = boolValue(config.getProperty("fireStep"));
         } else {
             config.setProperty("fireStep", String.valueOf(fireStep));
+            changed = true;
+        }
+        if (config.getProperty("fireNoFallDamage") != null) {
+            fireNoFallDamage = boolValue(config.getProperty("fireNoFallDamage"));
+        } else {
+            config.setProperty("fireNoFallDamage", String.valueOf(fireNoFallDamage));
             changed = true;
         }
         if (config.getProperty("overWater") != null) {
@@ -224,7 +310,18 @@ public class Config {
             config.setProperty("luck", String.valueOf(percentage));
             changed = true;
         }
-
+        if (config.getProperty("fireSplash") != null) {
+            fireSplash = boolValue(config.getProperty("fireSplash"));
+        } else {
+            config.setProperty("fireSplash", String.valueOf(fireSplash));
+            changed = true;
+        }
+        if (config.getProperty("fireRod") != null) {
+            fireRod = boolValue(config.getProperty("fireRod"));
+        } else {
+            config.setProperty("fireRod", String.valueOf(fireRod));
+            changed = true;
+        }
         if (changed) {
             FileOutputStream fo = new FileOutputStream(configPath);
             config.store(fo, configPath);
@@ -259,6 +356,18 @@ public class Config {
         }
     }
 
+    public static void setFireNoFallDamage(boolean value) {
+        FileOutputStream fo = null;
+        try {
+            fireNoFallDamage = value;
+            config.setProperty("fireNoFallDamage", String.valueOf(value));
+            fo = new FileOutputStream(configPath);
+            config.store(fo, configPath);
+            fo.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public static void setFireStep(boolean value) {
         FileOutputStream fo = null;
         try {
@@ -285,7 +394,7 @@ public class Config {
         }
     }
 
-    public static void setFirePick(boolean value) {
+    /*public static void setFirePick(boolean value) {
         FileOutputStream fo = null;
         try {
             firePick = value;
@@ -316,6 +425,30 @@ public class Config {
         try {
             fireShovel = value;
             config.setProperty("fireShovel", String.valueOf(value));
+            fo = new FileOutputStream(configPath);
+            config.store(fo, configPath);
+            fo.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }*/
+    public static void setFireTools(boolean value) {
+        FileOutputStream fo = null;
+        try {
+            fireTools = value;
+            config.setProperty("fireTools", String.valueOf(value));
+            fo = new FileOutputStream(configPath);
+            config.store(fo, configPath);
+            fo.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        public static void setFireSplash(boolean value) {
+        FileOutputStream fo = null;
+        try {
+            fireSplash = value;
+            config.setProperty("fireSplash", String.valueOf(value));
             fo = new FileOutputStream(configPath);
             config.store(fo, configPath);
             fo.close();
@@ -458,7 +591,11 @@ public class Config {
     public static boolean isFireSword() {
         return fireSword;
     }
-
+    
+    public static boolean isFireSplash() {
+        return fireSplash;
+    }
+    /*
     public static boolean isFirePick() {
         return firePick;
     }
@@ -469,8 +606,10 @@ public class Config {
 
     public static boolean isFireShovel() {
         return fireShovel;
+    }*/
+    public static boolean isFireTools() {
+        return fireTools;
     }
-
     public static boolean isOverLava() {
         return overLava;
     }
@@ -494,5 +633,13 @@ public class Config {
 
     public static void setPercentage(int percentage) {
         Config.percentage = percentage;
+    }
+
+    public static boolean isFireNoFallDamage() {
+        return fireNoFallDamage;
+    }
+    
+    public static int getExpansiveQuantum() {
+        return expansiveQuantum;
     }
 }
