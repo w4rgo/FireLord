@@ -1,0 +1,52 @@
+name: FireLord
+main: firelord.FireLord
+author: w4rgo
+version: 1.0
+commands:
+  firelord:
+    description: Displays the options of firelord plugin
+    usage: /firelord 
+permissions:
+    firelord.*:
+        description: Gives acces to all firelord features
+        children:
+            firelord.tools: true
+            firelord.armor: true
+            firelord.firestep: true
+            firelord.overfluids: true
+            firelord.sword: true
+            firelord.helmet: true
+            firelord.admins: true
+            firelord.fall: true
+            firelord.splash: true
+            firelord.rod: true
+    firelord.tools:
+        description: Allows to use the firelord tools
+        default: false       
+    firelord.armor:
+        description: Allows to use firelord armor
+        default: false
+    firelord.firestep: 
+        description: Allows to use firelord firestep
+        default: false
+    firelord.overfluids:
+        description: Allows to walk over fluids with firelord boots
+        default: false
+    firelord.sword:
+        description: Allows to use the firelord sword
+        default: false
+    firelord.helmet:
+        description: Allows to use the firelord helmet
+        default: false
+    firelord.admins:
+        description: Allows to use the firelord commands
+        default: false
+    firelord.fall:
+        description: Allows to use the firelord commands
+        default: false      
+    firelord.splash:
+        description: Allows to use the firelord commands
+        default: false
+    firelord.rod:
+        description: Allows to use the firelord commands
+        default: false
