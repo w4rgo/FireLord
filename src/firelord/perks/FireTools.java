@@ -4,6 +4,9 @@
  */
 package firelord.perks;
 
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import firelord.tools.FirePlayer;
 import firelord.BlocksChecks;
 import firelord.Config;
@@ -17,6 +20,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 
 import firelord.Config;
+import firelord.tools.FirePerm;
 import firelord.tools.FirePlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -66,22 +70,29 @@ public class FireTools implements Perk {
         return allowedPerk && active() && fp.checkLuck();
     }
 
+    public boolean isResidenceInBlock(Player player , Block block) {
+        
+        if(FirePerm.isResidence()) {
+            Location loc = block.getLocation();
+            ClaimedResidence res = Residence.getResidenceManager().getByLoc(loc);
+            if (res == null) {
+                return false;
+            } else {
+                ResidencePermissions perms = res.getPermissions();
+                boolean defaultValue = true;
+                return perms.playerHas(player.getName(), "build", defaultValue);
+               
+            }
+        } else {
+            return false;
+        }
+    }
+    
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(final BlockBreakEvent event) {
         Player player = event.getPlayer();
 
-        //If residence active and is from residence, chao.
 
-//        if (Config.isIsResidence()) {
-//            ResidenceManager rm = new ResidenceManager();
-//            ClaimedResidence cres = rm.getByLoc(event.getBlock().getLocation());
-//            if (cres != null) {
-//                if (cres.containsLoc(event.getBlock().getLocation())) {
-//                    return;
-//                }
-//            }
-//
-//        }
         if (allowed(player)) {
 
             int iih = player.getItemInHand().getTypeId();
@@ -139,21 +150,14 @@ public class FireTools implements Perk {
 //        ArrayList<ItemStack> oldItems = new ArrayList<ItemStack>();
 
         Location loc = event.getBlock().getLocation();
-        ItemStack matStack = new ItemStack(newMaterial);
-        event.setCancelled(true);
-        event.getBlock().getDrops().clear();
-        event.getBlock().setType(Material.AIR);
-        loc.getWorld().dropItemNaturally(loc,matStack);
+        if(!this.isResidenceInBlock(event.getPlayer(),event.getBlock())){
+            ItemStack matStack = new ItemStack(newMaterial);
+            event.setCancelled(true);
+            event.getBlock().getDrops().clear();
+            event.getBlock().setType(Material.AIR);
+            loc.getWorld().dropItemNaturally(loc,matStack);
+        }
         
-//        for (ItemStack item : event.getDrops()) {
-//            if (item.getType() == oldMaterial) {
-//                oldItems.add(item);
-//                int newAmount = item.getAmount();
-//                newItems.add(new ItemStack(newMaterial, newAmount));
-//            }
-//        }
-//        event.getDrops().removeAll(oldItems);
-//        event.getDrops().addAll(newItems);
         
     }
 }

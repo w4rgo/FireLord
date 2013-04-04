@@ -595,18 +595,7 @@ public class Config {
     public static boolean isFireSplash() {
         return fireSplash;
     }
-    /*
-    public static boolean isFirePick() {
-        return firePick;
-    }
 
-    public static boolean isFireAxe() {
-        return fireAxe;
-    }
-
-    public static boolean isFireShovel() {
-        return fireShovel;
-    }*/
     public static boolean isFireTools() {
         return fireTools;
     }

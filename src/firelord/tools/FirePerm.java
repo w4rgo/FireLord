@@ -30,7 +30,18 @@ public class FirePerm {
     private FirePlayer player;
     private static final String  _splashPerm="firelord.splash";
     private static final String _rodPerm="firelord.rod";
+    private static boolean residence= false;
 
+    public static boolean isResidence() {
+        return residence;
+    }
+
+    public static void setResidence(boolean residence) {
+        FirePerm.residence = residence;
+    }
+    
+    
+    
     public FirePerm(FirePlayer player) {
         this.player = player;
     }

@@ -40,6 +40,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import firelord.tools.FirePerm;
+import org.bukkit.plugin.PluginManager;
 import org.mcstats.Metrics;
 
 /**
@@ -54,6 +55,7 @@ public class FireLord extends JavaPlugin {
     private String version = "0.9";
     public static final Logger log = Logger.getLogger("Minecraft");
     private Plugin residence=null;
+    
     public void onDisable() {
         log.info(name + " version " + version + " disabled");
     }
@@ -66,7 +68,25 @@ public class FireLord extends JavaPlugin {
         this.residence = residence;
     }
 
-
+    public void autoEnableResidence() {
+        PluginManager pm = getServer().getPluginManager();
+        Plugin p = pm.getPlugin("Residence");
+        if(p!=null)
+        {
+             if(!p.isEnabled())
+             {
+                  System.out.println("<Firelord> - Manually Enabling Residence!");
+                  pm.enablePlugin(p);
+             }
+             FirePerm.setResidence(true);
+        }
+        else
+        {
+             System.out.println("<Firelord> - Residence NOT Installed, DISABLED!");
+             FirePerm.setResidence(false);
+             //this.setEnabled(false);
+        }
+    }
 
     private void setupBukkitPerm() {
         FirePerm.setPermissions(true);
@@ -75,6 +95,8 @@ public class FireLord extends JavaPlugin {
     //Java is like a beautifull woman. Beautifull but you have to understand it.
     @Override
         public void onEnable() {
+        
+        
         try {
             Metrics metrics = new Metrics(this);
             metrics.start();
